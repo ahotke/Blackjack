@@ -2,13 +2,14 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-namespace Blackjack_Royale
+namespace Blackjack
 {
     public class Game1 : Game
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
+        Rectangle sourceRectangle;
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
