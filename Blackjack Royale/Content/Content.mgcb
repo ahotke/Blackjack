@@ -25,7 +25,7 @@
 /processorParam:TextureFormat=Color
 /build:1000_F_153926341_uaRFfrUs3PBLldZwp4cRpmFjmhvMoTrY-removebg-preview.png;blackjack_symbol.png
 
-#begin cards.png
+#begin 360_F_513393579_muJLItrIp3opsY80f2XhXeJ8Q5UGMBUp-removebg-preview.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -35,5 +35,41 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:cards.png
+/build:360_F_513393579_muJLItrIp3opsY80f2XhXeJ8Q5UGMBUp-removebg-preview.png;coin_pile.png
+
+#begin card_deck.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:card_deck.png
+
+#begin output-onlinegiftools.gif
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:output-onlinegiftools.gif;coins_falling.gif
+
+#begin two-golden-buttons-play-vip-260nw-2296843847.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:two-golden-buttons-play-vip-260nw-2296843847.png;play_button.png
 
