@@ -61,6 +61,12 @@
 /processorParam:TextureFormat=Color
 /build:output-onlinegiftools.gif;coins_falling.gif
 
+#begin sound-effects-library-cash-register-sound.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:sound-effects-library-cash-register-sound.mp3
+
 #begin two-golden-buttons-play-vip-260nw-2296843847.png
 /importer:TextureImporter
 /processor:TextureProcessor
