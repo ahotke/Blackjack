@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 using System.Collections.Generic;
 
 namespace Blackjack_Royale
@@ -27,6 +28,7 @@ namespace Blackjack_Royale
 
         List<Texture2D> cardTextures;
         List<int> deck;
+        List<int> deckValues;
         List<int> playerHand;
         List<int> dealerHand;
         public Game1()
@@ -46,32 +48,49 @@ namespace Blackjack_Royale
             cardTextures = new List<Texture2D>();
 
             deck = new List<int>();
+            deckValues = new List<int>();
 
             logoRect = new Rectangle(240, 0, 325, 325);
             playRect = new Rectangle(272, 325, 250, 100);
             coinAnimRect = new Rectangle(0, 0, 200, 450);
-            coinAnimRect1 = new Rectangle();
+            coinAnimRect1 = new Rectangle(550, 0, 200, 450);
             coinPileRect = new Rectangle(-40, 310, 350, 200);
             coinPileRect1 = new Rectangle(485, 310, 350, 200);
 
             int width = cardSpritesheet.Width / 13;
             int height = cardSpritesheet.Height / 5;
-            for (int y = 0; y < 5; y++)
+
+            
+
+
+            for (int y = 0; y < 4; y++)
+            {
                 for (int x = 0; x < 13; x++)
                 {
+                    
                     sourceRect = new Rectangle(x * width, y * height, width, height);
                     Texture2D cropTexture = new Texture2D(GraphicsDevice, width, height);
                     Color[] data = new Color[width * height];
                     cardSpritesheet.GetData(0, sourceRect, data, 0, data.Length);
                     cropTexture.SetData(data);
-                    if (cardTextures.Count < 55)
+                    if (cardTextures.Count < 52)
                         cardTextures.Add(cropTexture);
                 }
+            }
+
+            sourceRect = new Rectangle(2 * width, 4 * height, width, height);
+            Texture2D cropTextureBack = new Texture2D(GraphicsDevice, width, height);
+            Color[] dataBack = new Color[width * height];
+            cardSpritesheet.GetData(0, sourceRect, dataBack, 0, dataBack.Length);
+            cropTextureBack.SetData(dataBack);
+            cardTextures.Insert(0, cropTextureBack);
+
+
 
 
             for (int i = 0; i < 5; i++)
             {
-                for (int c = 0; c < 52; c++)
+                for (int c = 1; c < 52; c++)
                     cardTextures.Add(cardTextures[c]);
             }
 
@@ -80,6 +99,26 @@ namespace Blackjack_Royale
                 deck.Add(i);
             }
 
+            deckValues.Add(0);
+            deckValues.Add(11);
+            deckValues.Add(2);
+            deckValues.Add(3);
+            deckValues.Add(4);
+            deckValues.Add(5);
+            deckValues.Add(6);
+            deckValues.Add(7);
+            deckValues.Add(8);
+            deckValues.Add(9);
+            deckValues.Add(10);
+            deckValues.Add(10);
+            deckValues.Add(10);
+            deckValues.Add(10);
+            //0, 11, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10
+
+            for (int i = 1; i < 312; i++)
+            {
+                deck.Add(deck[i]);
+            }
         }
 
         protected override void LoadContent()
@@ -114,12 +153,6 @@ namespace Blackjack_Royale
                 }
             }
 
-            
-
-            
-
-
-
             base.Update(gameTime);
         }
 
@@ -134,21 +167,17 @@ namespace Blackjack_Royale
             {
                 _spriteBatch.Draw(logoTexture, logoRect, Color.White);
                 _spriteBatch.Draw(playTexture, playRect, Color.White);
-                //_spriteBatch.Draw(coinFallingTexture, coinAnimRect, Color.White);
+                _spriteBatch.Draw(coinFallingTexture, coinAnimRect, Color.White);
+                _spriteBatch.Draw(coinFallingTexture, coinAnimRect1, Color.White);
                 _spriteBatch.Draw(coinPileTexture, coinPileRect, Color.White);
                 _spriteBatch.Draw(coinPileTexture, coinPileRect1, Color.White);
             }
 
             if (screen == Screen.casino)
-            {
-
-                //for (int i = 0; i < cardTextures.Count; i++)
-
-                //_spriteBatch.Draw(cardTextures[deck[i]], new Rectangle((0 + 60 * i), 0, 60, 100), Color.White);
-
-                // positions 52, 53 + 54 are all useless, should cycle 54 to the start of the deck and not recyle. Remove 52 + 53 
-                _spriteBatch.Draw(cardTextures[deck[55]], new Rectangle(0, 0, 60, 100), Color.White);
+            {                
+                _spriteBatch.Draw(cardTextures[deck[52]], new Rectangle(0, 0, 60, 100), Color.White);
             }
+            
             _spriteBatch.End();
             base.Draw(gameTime);
         }
