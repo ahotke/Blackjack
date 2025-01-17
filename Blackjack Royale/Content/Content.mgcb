@@ -61,6 +61,20 @@
 /processorParam:TextureFormat=Color
 /build:deal-button-rounded-isolated-sign-196836800.png;deal_button.png
 
+#begin File.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:File.spritefont;moneyFont.spritefont
+
+#begin moneyFont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:moneyFont.spritefont
+
 #begin output-onlinegiftools.gif
 /importer:TextureImporter
 /processor:TextureProcessor

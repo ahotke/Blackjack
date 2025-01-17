@@ -26,8 +26,12 @@ namespace Blackjack_Royale
         int cardShuffle;
         int bet, money;
 
+        bool lose = false, win = false;
+
         Rectangle shuffleRect, tableRect, dealRect;
         Rectangle sourceRect, logoRect, playRect, coinAnimRect, coinAnimRect1, coinPileRect, coinPileRect1;
+
+        SpriteFont moneyFont;
 
         MouseState mouseState;
         enum Screen {intro, casino, end};
@@ -72,12 +76,10 @@ namespace Blackjack_Royale
             tableRect = new Rectangle(100, 0, 600, 400);
             dealRect = new Rectangle(535, 35, 80, 40);
 
+            moneyFont = Content.Load<SpriteFont>("moneyFont");
+
             int width = cardSpritesheet.Width / 13;
             int height = cardSpritesheet.Height / 5;
-
-            
-
-
             for (int y = 0; y < 4; y++)
             {
                 for (int x = 0; x < 13; x++)
@@ -225,10 +227,22 @@ namespace Blackjack_Royale
                 _spriteBatch.Draw(tableTexture, tableRect, Color.LightGray);
                 _spriteBatch.Draw(cardTextures[deck[0]], new Rectangle(163, 40, 50, 75), Color.White);
                 _spriteBatch.Draw(dealBtnTexture, dealRect, Color.White);
-               // _spriteBatch.Draw(shuffleBtnTexture, shuffleRect, Color.White);
+                _spriteBatch.DrawString(moneyFont, "Your bet: " + bet, new Vector2(5, 425), Color.White);
+                _spriteBatch.DrawString(moneyFont, "Money: " + money, new Vector2(10, 450), Color.White);
+               // _spriteBatch.Draw(shuffleBtnTexture, shuffleRect, Color.White); 
                
             }
-            
+
+            if (screen == Screen.end && lose)
+            {
+                GraphicsDevice.Clear(Color.Black);
+            }
+
+            if (screen == Screen.end && win)
+            {
+                GraphicsDevice.Clear(Color.DarkRed);
+            }
+
             _spriteBatch.End();
             base.Draw(gameTime);
         }

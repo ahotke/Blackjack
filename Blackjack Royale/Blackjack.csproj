@@ -11,6 +11,7 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="Content\File.spritefont" />
     <None Remove="Content\FreakyPod.png" />
     <None Remove="Content\FreakyPod_Neutral.png" />
     <None Remove="Content\FreakyPod_Wave.png" />
