@@ -11,6 +11,10 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="Content\FreakyPod.png" />
+    <None Remove="Content\FreakyPod_Neutral.png" />
+    <None Remove="Content\FreakyPod_Wave.png" />
+    <None Remove="Content\Pod%27s a Freak.png" />
     <None Remove="Icon.ico" />
     <None Remove="Icon.bmp" />
   </ItemGroup>
