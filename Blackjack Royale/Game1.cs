@@ -22,18 +22,24 @@ namespace Blackjack_Royale
         Texture2D shuffleBtnTexture;
         Texture2D tableTexture;
         Texture2D dealBtnTexture;
+        Texture2D bet10Texture;
+        Texture2D bet10NegTexture;
+        Texture2D betMaxTexture;
+        Texture2D betMinTexture;
+
+        //Add previous mousestate
 
         int cardShuffle;
         int bet, money;
 
         bool lose = false, win = false;
 
-        Rectangle shuffleRect, tableRect, dealRect;
+        Rectangle shuffleRect, tableRect, dealRect, bet10Rect, bet10NegRect, betMaxRect, betMinRect;
         Rectangle sourceRect, logoRect, playRect, coinAnimRect, coinAnimRect1, coinPileRect, coinPileRect1;
 
         SpriteFont moneyFont;
 
-        MouseState mouseState;
+        MouseState mouseState, prevMouseState;
         enum Screen {intro, casino, end};
 
         Screen screen;
@@ -75,6 +81,10 @@ namespace Blackjack_Royale
             shuffleRect = new Rectangle(250, 250, 150, 75);
             tableRect = new Rectangle(100, 0, 600, 400);
             dealRect = new Rectangle(535, 35, 80, 40);
+            bet10Rect = new Rectangle(650, 340, 60, 60);
+            bet10NegRect = new Rectangle(720, 340, 60, 60);
+            betMaxRect = new Rectangle(650, 410, 60, 60);
+            betMinRect = new Rectangle(720, 410, 60, 60);
 
             moneyFont = Content.Load<SpriteFont>("moneyFont");
 
@@ -146,7 +156,11 @@ namespace Blackjack_Royale
             shuffleBtnTexture = Content.Load<Texture2D>("ShuffleButton");
             tableTexture = Content.Load<Texture2D>("table");
             dealBtnTexture = Content.Load<Texture2D>("deal_button");
-           
+            bet10Texture = Content.Load<Texture2D>("bet10_button");
+            bet10NegTexture = Content.Load<Texture2D>("bet10neg_button");
+            betMaxTexture = Content.Load<Texture2D>("betmax_button");
+            betMinTexture = Content.Load<Texture2D>("betmin_button");
+
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
@@ -157,6 +171,7 @@ namespace Blackjack_Royale
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
+            prevMouseState = mouseState;
             mouseState = Mouse.GetState();
 
             this.Window.Title = $"x = {mouseState.X}, y = {mouseState.Y}";
@@ -175,8 +190,32 @@ namespace Blackjack_Royale
 
             if (screen == Screen.casino)
             {
-                if (mouseState.LeftButton == ButtonState.Pressed)
+                if (mouseState.LeftButton == ButtonState.Pressed && prevMouseState.LeftButton == ButtonState.Released)
                 {
+                    if (bet10Rect.Contains(mouseState.Position) && money >= 10)
+                    {
+                        money -= 10;
+                        bet += 10;
+                    }
+
+                    if (bet10NegRect.Contains(mouseState.Position) && bet >= 10)
+                    {
+                        money += 10;
+                        bet -= 10;
+                    }
+
+                    if (betMaxRect.Contains(mouseState.Position) && money > 10)
+                    {
+                        bet += money;
+                        money = 0;
+                    }
+
+                    if (betMinRect.Contains(mouseState.Position) && bet >= 10)
+                    {
+                        money += bet - 10;
+                        bet = 10;
+                    }
+
                     if (shuffleRect.Contains(mouseState.Position))
                     {
                         //tempDeck.Add(deck[0]);
@@ -230,7 +269,12 @@ namespace Blackjack_Royale
                 _spriteBatch.DrawString(moneyFont, "Your bet: " + bet, new Vector2(5, 425), Color.White);
                 _spriteBatch.DrawString(moneyFont, "Money: " + money, new Vector2(10, 450), Color.White);
                // _spriteBatch.Draw(shuffleBtnTexture, shuffleRect, Color.White); 
-               
+                _spriteBatch.Draw(bet10Texture, bet10Rect, Color.White);
+                _spriteBatch.Draw(bet10NegTexture, bet10NegRect, Color.White);
+                _spriteBatch.Draw(betMaxTexture, betMaxRect, Color.White);
+                _spriteBatch.Draw(betMinTexture, betMinRect, Color.White);
+
+
             }
 
             if (screen == Screen.end && lose)
