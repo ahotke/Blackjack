@@ -3,6 +3,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Security.Cryptography;
 
 namespace Blackjack_Royale
 {
@@ -30,14 +32,14 @@ namespace Blackjack_Royale
         //Add previous mousestate
 
         int cardShuffle;
-        int bet, money;
+        int bet, money, dealerTotal, playerTotal, dealerTotalShowing, cardOffset = 0;
 
-        bool lose = false, win = false;
+        bool lose = false;
 
         Rectangle shuffleRect, tableRect, dealRect, bet10Rect, bet10NegRect, betMaxRect, betMinRect;
         Rectangle sourceRect, logoRect, playRect, coinAnimRect, coinAnimRect1, coinPileRect, coinPileRect1;
 
-        SpriteFont moneyFont;
+        SpriteFont moneyFont, EndFont;
 
         MouseState mouseState, prevMouseState;
         enum Screen {intro, casino, end};
@@ -45,7 +47,8 @@ namespace Blackjack_Royale
         Screen screen;
 
         List<Texture2D> cardTextures;
-        List<Texture2D> tempTextureHolder;
+        List<Texture2D> playerCards;
+        List<Texture2D> dealerCards;
         List<int> deck;
         List<int> tempDeck;
         List<int> deckValues;
@@ -66,11 +69,14 @@ namespace Blackjack_Royale
 
             screen = Screen.intro;
             cardTextures = new List<Texture2D>();
-            tempTextureHolder = new List<Texture2D>();
+            playerCards = new List<Texture2D>();
+            dealerCards = new List<Texture2D>();
 
             deck = new List<int>();
             tempDeck = new List<int>();
             deckValues = new List<int>();
+            playerHand = new List<int>();
+            dealerHand = new List<int>();
 
             logoRect = new Rectangle(240, 0, 325, 325);
             playRect = new Rectangle(272, 325, 250, 100);
@@ -87,6 +93,7 @@ namespace Blackjack_Royale
             betMinRect = new Rectangle(720, 410, 60, 60);
 
             moneyFont = Content.Load<SpriteFont>("moneyFont");
+            EndFont = Content.Load<SpriteFont>("EndFont");
 
             int width = cardSpritesheet.Width / 13;
             int height = cardSpritesheet.Height / 5;
@@ -140,6 +147,17 @@ namespace Blackjack_Royale
             deckValues.Add(10);
             deckValues.Add(10);
             deckValues.Add(10);
+            
+            for (int i = 0; i < 24; i++)
+            {
+                for (int o = 1; o < 13; o++)
+                {
+                    deckValues.Add(deckValues[o]);
+                }
+            }
+
+            
+            
             //0, 11, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10
 
             bet = 0;
@@ -210,33 +228,65 @@ namespace Blackjack_Royale
                         money = 0;
                     }
 
-                    if (betMinRect.Contains(mouseState.Position) && bet >= 10)
+                    if (betMinRect.Contains(mouseState.Position))
                     {
                         money += bet - 10;
                         bet = 10;
                     }
 
-                    if (shuffleRect.Contains(mouseState.Position))
+                    if (dealRect.Contains(mouseState.Position))
                     {
-                        //tempDeck.Add(deck[0]);
-                        tempTextureHolder.Add(cardTextures[0]);
-
-                        //for (int i = 1; 1 < 312; i++)
-                        //{
-                        //    cardShuffle = generator.Next(cardTextures.Count);
-                        //    tempDeck.Add(deckValues[cardShuffle]);
-                        //    tempTextureHolder.Add(cardTextures[cardShuffle+1]);
-                        //}
-
-                        //for (int i = 1; i < 312; i++)
-                        //{
-                        //    deck.Add(tempDeck[i]);
-                        //    cardTextures.Add(tempTextureHolder[i]);
-                        //}
-
-                        tempDeck.Clear();
-                        tempTextureHolder.Clear();
+                        playerHand.Add(deckValues[1]);
+                        playerCards.Add(cardTextures[1]);
+                        deckValues.Insert(deckValues.Count, deckValues[1]);
+                        deckValues.Remove(deckValues[1]);
+                        cardTextures.Add(cardTextures[1]);
+                        cardTextures.Remove(cardTextures[1]);
+                        dealerHand.Add(deckValues[1]);
+                        dealerCards.Add(cardTextures[0]);
+                        deckValues.Insert(deckValues.Count, deckValues[1]);
+                        deckValues.Remove(deckValues[1]);
+                        playerHand.Add(deckValues[1]);
+                        playerCards.Add(cardTextures[1]);
+                        deckValues.Insert(deckValues.Count, deckValues[1]);
+                        deckValues.Remove(deckValues[1]);
+                        cardTextures.Add(cardTextures[1]);
+                        cardTextures.Remove(cardTextures[1]);
+                        dealerHand.Add(deckValues[1]);
+                        dealerCards.Add(cardTextures[1]);
+                        deckValues.Insert(deckValues.Count, deckValues[1]);
+                        deckValues.Remove(deckValues[1]);
+                        cardTextures.Add(cardTextures[1]);
+                        cardTextures.Remove(cardTextures[1]);
                     }
+
+                    //if (shuffleRect.Contains(mouseState.Position))
+                    //{
+                    //    //tempDeck.Add(deck[0]);
+                    //    tempTextureHolder.Add(cardTextures[0]);
+
+                    //    //for (int i = 1; 1 < 312; i++)
+                    //    //{
+                    //    //    cardShuffle = generator.Next(cardTextures.Count);
+                    //    //    tempDeck.Add(deckValues[cardShuffle]);
+                    //    //    tempTextureHolder.Add(cardTextures[cardShuffle+1]);
+                    //    //}
+
+                    //    //for (int i = 1; i < 312; i++)
+                    //    //{
+                    //    //    deck.Add(tempDeck[i]);
+                    //    //    cardTextures.Add(tempTextureHolder[i]);
+                    //    //}
+
+                    //    tempDeck.Clear();
+                    //    tempTextureHolder.Clear();
+
+                        
+                    //}
+
+                    dealerTotal = dealerHand.Sum();
+                    dealerTotalShowing = dealerHand.Sum();
+                    playerTotal = playerHand.Sum();
 
                 }
             }
@@ -268,11 +318,26 @@ namespace Blackjack_Royale
                 _spriteBatch.Draw(dealBtnTexture, dealRect, Color.White);
                 _spriteBatch.DrawString(moneyFont, "Your bet: " + bet, new Vector2(5, 425), Color.White);
                 _spriteBatch.DrawString(moneyFont, "Money: " + money, new Vector2(10, 450), Color.White);
-               // _spriteBatch.Draw(shuffleBtnTexture, shuffleRect, Color.White); 
+                _spriteBatch.DrawString(moneyFont, "You have:" + playerTotal, new Vector2(335, 450), Color.White);
+                _spriteBatch.DrawString(moneyFont, "Dealer has:" + dealerTotalShowing, new Vector2(335, 40), Color.White);
+                // _spriteBatch.Draw(shuffleBtnTexture, shuffleRect, Color.White); 
                 _spriteBatch.Draw(bet10Texture, bet10Rect, Color.White);
                 _spriteBatch.Draw(bet10NegTexture, bet10NegRect, Color.White);
                 _spriteBatch.Draw(betMaxTexture, betMaxRect, Color.White);
                 _spriteBatch.Draw(betMinTexture, betMinRect, Color.White);
+                for (int i = 0; i < playerHand.Count; i++)
+                {
+                    cardOffset = i * 60;
+                    _spriteBatch.Draw(playerCards[i], new Rectangle(410 - cardOffset, 375, 50, 75), Color.White);
+                }
+
+                for (int i = 0; i < dealerHand.Count; i++)
+                {
+                    cardOffset = i * 60;
+                    _spriteBatch.Draw(dealerCards[i], new Rectangle(410 - cardOffset, 100, 50, 75), Color.White);
+                }
+
+
 
 
             }
@@ -280,11 +345,8 @@ namespace Blackjack_Royale
             if (screen == Screen.end && lose)
             {
                 GraphicsDevice.Clear(Color.Black);
-            }
-
-            if (screen == Screen.end && win)
-            {
-                GraphicsDevice.Clear(Color.DarkRed);
+                _spriteBatch.DrawString(EndFont, "You Lose", new Vector2(200, 250), Color.Red);
+                
             }
 
             _spriteBatch.End();
