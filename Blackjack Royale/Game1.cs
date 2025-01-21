@@ -32,7 +32,7 @@ namespace Blackjack_Royale
         //Add previous mousestate
 
         int cardShuffle;
-        int bet, money, dealerTotal, playerTotal, dealerTotalShowing, cardOffset = 0;
+        int bet, money, dealerTotal, playerTotal, cardOffset = 0;
 
         bool lose = false;
 
@@ -285,7 +285,6 @@ namespace Blackjack_Royale
                     //}
 
                     dealerTotal = dealerHand.Sum();
-                    dealerTotalShowing = dealerHand.Sum();
                     playerTotal = playerHand.Sum();
 
                 }
@@ -319,7 +318,6 @@ namespace Blackjack_Royale
                 _spriteBatch.DrawString(moneyFont, "Your bet: " + bet, new Vector2(5, 425), Color.White);
                 _spriteBatch.DrawString(moneyFont, "Money: " + money, new Vector2(10, 450), Color.White);
                 _spriteBatch.DrawString(moneyFont, "You have:" + playerTotal, new Vector2(335, 450), Color.White);
-                _spriteBatch.DrawString(moneyFont, "Dealer has:" + dealerTotalShowing, new Vector2(335, 40), Color.White);
                 // _spriteBatch.Draw(shuffleBtnTexture, shuffleRect, Color.White); 
                 _spriteBatch.Draw(bet10Texture, bet10Rect, Color.White);
                 _spriteBatch.Draw(bet10NegTexture, bet10NegRect, Color.White);
@@ -328,13 +326,13 @@ namespace Blackjack_Royale
                 for (int i = 0; i < playerHand.Count; i++)
                 {
                     cardOffset = i * 60;
-                    _spriteBatch.Draw(playerCards[i], new Rectangle(410 - cardOffset, 375, 50, 75), Color.White);
+                    _spriteBatch.Draw(playerCards[i], new Rectangle(410 - cardOffset, 365, 50, 75), Color.White);
                 }
 
                 for (int i = 0; i < dealerHand.Count; i++)
                 {
                     cardOffset = i * 60;
-                    _spriteBatch.Draw(dealerCards[i], new Rectangle(410 - cardOffset, 100, 50, 75), Color.White);
+                    _spriteBatch.Draw(dealerCards[i], new Rectangle(410 - cardOffset, 80, 50, 75), Color.White);
                 }
 
 
