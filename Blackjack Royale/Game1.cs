@@ -36,9 +36,9 @@ namespace Blackjack_Royale
         int cardShuffle;
         int bet, money, dealerTotal, playerTotal, cardOffset = 0;
 
-        bool lose = false, deal = true;
+        bool lose = false, deal = true, stand = false, dealerDone = false, dealerDrawing = false, playing = false;
 
-        Rectangle shuffleRect, tableRect, dealRect, bet10Rect, bet10NegRect, betMaxRect, betMinRect;
+        Rectangle shuffleRect, tableRect, dealRect, bet10Rect, bet10NegRect, betMaxRect, betMinRect, hitRect, standRect;
         Rectangle sourceRect, logoRect, playRect, coinAnimRect, coinAnimRect1, coinPileRect, coinPileRect1;
 
         SpriteFont moneyFont, EndFont;
@@ -93,6 +93,8 @@ namespace Blackjack_Royale
             bet10NegRect = new Rectangle(720, 340, 60, 60);
             betMaxRect = new Rectangle(650, 410, 60, 60);
             betMinRect = new Rectangle(720, 410, 60, 60);
+            hitRect = new Rectangle(525, 320, 100, 65);
+            standRect = new Rectangle(525, 400, 100, 65);
 
             moneyFont = Content.Load<SpriteFont>("moneyFont");
             EndFont = Content.Load<SpriteFont>("EndFont");
@@ -192,7 +194,7 @@ namespace Blackjack_Royale
             prevMouseState = mouseState;
             mouseState = Mouse.GetState();
 
-            this.Window.Title = $"x = {mouseState.X}, y = {mouseState.Y}";
+            this.Window.Title = "Casino";
 
             if (screen == Screen.intro)
             {
@@ -236,36 +238,6 @@ namespace Blackjack_Royale
 
                     if (dealRect.Contains(mouseState.Position))
                     {
-                        deal = false;
-
-                        playerHand.Add(deckValues[1]);
-                        playerCards.Add(cardTextures[1]);
-                        deckValues.Insert(deckValues.Count, deckValues[1]);
-                        deckValues.Remove(deckValues[1]);
-                        cardTextures.Add(cardTextures[1]);
-                        cardTextures.Remove(cardTextures[1]);
-                        dealerHand.Add(deckValues[1]);
-                        dealerCards.Add(cardTextures[0]);
-                        deckValues.Insert(deckValues.Count, deckValues[1]);
-                        deckValues.Remove(deckValues[1]);
-                        cardTextures.Add(cardTextures[1]);
-                        cardTextures.Remove(cardTextures[1]);
-                        playerHand.Add(deckValues[1]);
-                        playerCards.Add(cardTextures[1]);
-                        deckValues.Insert(deckValues.Count, deckValues[1]);
-                        deckValues.Remove(deckValues[1]);
-                        cardTextures.Add(cardTextures[1]);
-                        cardTextures.Remove(cardTextures[1]);
-                        dealerHand.Add(deckValues[1]);
-                        dealerCards.Add(cardTextures[1]);
-                        deckValues.Insert(deckValues.Count, deckValues[1]);
-                        deckValues.Remove(deckValues[1]);
-                        cardTextures.Add(cardTextures[1]);
-                        cardTextures.Remove(cardTextures[1]);
-                    }
-
-                    if (shuffleRect.Contains(mouseState.Position))
-                    {
                         tempDeck.Add(deckValues[0]);
                         tempTextureHolder.Add(cardTextures[0]);
 
@@ -291,74 +263,173 @@ namespace Blackjack_Royale
                         tempDeck.Clear();
                         tempTextureHolder.Clear();
 
+                        deal = false;
 
+                        playing = true;
+
+                        playerHand.Add(deckValues[1]);
+                        playerCards.Add(cardTextures[1]);
+                        deckValues.Add(deckValues[1]);
+                        deckValues.Remove(deckValues[1]);
+                        cardTextures.Add(cardTextures[1]);
+                        cardTextures.Remove(cardTextures[1]);
+                        dealerHand.Add(deckValues[1]);
+                        dealerCards.Add(cardTextures[0]);
+                        deckValues.Add(deckValues[1]);
+                        deckValues.Remove(deckValues[1]);
+                        cardTextures.Add(cardTextures[1]);
+                        cardTextures.Remove(cardTextures[1]);
+                        playerHand.Add(deckValues[1]);
+                        playerCards.Add(cardTextures[1]);
+                        deckValues.Add(deckValues[1]);
+                        deckValues.Remove(deckValues[1]);
+                        cardTextures.Add(cardTextures[1]);
+                        cardTextures.Remove(cardTextures[1]);
+                        dealerHand.Add(deckValues[1]);
+                        dealerCards.Add(cardTextures[1]);
+                        deckValues.Add(deckValues[1]);
+                        deckValues.Remove(deckValues[1]);
+                        cardTextures.Add(cardTextures[1]);
+                        cardTextures.Remove(cardTextures[1]);
+                    }
+
+                    if (hitRect.Contains(mouseState.Position) && playerTotal < 21)
+                    {
+                        playerHand.Add(deckValues[1]);
+                        playerCards.Add(cardTextures[1]);
+                        deckValues.Add(deckValues[1]);
+                        deckValues.Remove(deckValues[1]);
+                        cardTextures.Add(cardTextures[1]);
+                        cardTextures.Remove(cardTextures[1]);
+                    }
+
+                    if (standRect.Contains(mouseState.Position) && dealerTotal !>= 17)
+                    {
+                        stand = true;
+                        dealerDrawing = true;
+                    }
+
+                    if (dealerDone == true)
+                    {
+                        dealerDrawing = false;
+                        playing = false;
+                    }
+
+                    if (dealerDrawing == true)
+                    {
+                        dealerHand.Add(deckValues[1]);
+                        dealerCards.Add(cardTextures[1]);
+                        deckValues.Add(deckValues[1]);
+                        deckValues.Remove(deckValues[1]);
+                        cardTextures.Add(cardTextures[1]);
+                        cardTextures.Remove(cardTextures[1]);
+                    }
+
+                    if (dealerTotal >= 17)
+                    {
+                        dealerDone = true;
                     }
 
                     dealerTotal = dealerHand.Sum();
                     playerTotal = playerHand.Sum();
 
-                }
-
-                if (playerTotal == 21 && playerCards.Count == 2 && dealerTotal != 21)
-                {
-                    money += (bet * 3);
-                    bet = 0;
-                    playerHand.Clear();
-                    playerCards.Clear();
-                    dealerHand.Clear();
-                    dealerCards.Clear();
-                }
-
-                if (dealerTotal == 21 && dealerCards.Count == 2 && playerTotal != 21)
-                {
-                    bet = 0;
-                    playerHand.Clear();
-                    playerCards.Clear();
-                    dealerHand.Clear();
-                    dealerCards.Clear();
-                }
-
-                if (dealerTotal == 21 && dealerCards.Count == 2 && playerTotal == 21)
-                {
-                    money += bet;
-                    bet = 0;
-                }
-
-                if (dealerTotal > 21)
-                {
-                    for (int i = 0; i < dealerHand.Count; i++)
+                    if (playerTotal == 21 && playerCards.Count == 2 && dealerTotal != 21)
                     {
-                        if (dealerHand[i] == 11)
-                        {
-                            dealerHand[i] = 1;
-                        }
-                    }
-
-                    dealerTotal = dealerHand.Sum();
-                }
-
-                if (playerTotal > 21)
-                {
-                    for (int i = 0; i < playerHand.Count; i++)
-                    {
-                        if (playerHand[i] == 11)
-                        {
-                            playerHand[i] = 1;
-                        }
-                    }
-
-                    playerTotal = playerHand.Sum();
-
-                    if (playerTotal > 21)
-                    {
+                        money += (bet * 3);
                         bet = 0;
                         playerHand.Clear();
                         playerCards.Clear();
                         dealerHand.Clear();
                         dealerCards.Clear();
                     }
+
+                    if (dealerTotal == 21 && dealerCards.Count == 2 && playerTotal != 21)
+                    {
+                        bet = 0;
+                        playerHand.Clear();
+                        playerCards.Clear();
+                        dealerHand.Clear();
+                        dealerCards.Clear();
+                        dealerDone = true;
+                    }
+
+                    if (dealerTotal == 21 && dealerCards.Count == 2 && playerTotal == 21)
+                    {
+                        money += bet;
+                        bet = 0;
+                        dealerDone = true;
+                    }
+
+                    if (dealerTotal > 21)
+                    {
+                        for (int i = 0; i < dealerHand.Count; i++)
+                        {
+                            if (dealerHand[i] == 11)
+                            {
+                                dealerHand[i] = 1;
+                            }
+                        }
+
+                        dealerTotal = dealerHand.Sum();
+                    }
+
+                    if (playerTotal > 21)
+                    {
+                        for (int i = 0; i < playerHand.Count; i++)
+                        {
+                            if (playerHand[i] == 11)
+                            {
+                                playerHand[i] = 1;
+                            }
+                        }
+
+                        playerTotal = playerHand.Sum();
+
+                        if (playerTotal > 21)
+                        {
+                            bet = 0;
+                            playerHand.Clear();
+                            playerCards.Clear();
+                            dealerHand.Clear();
+                            dealerCards.Clear();
+                        }
+                    }
+
+                    if (stand == true && dealerDone == true)
+                    {
+                        if (dealerTotal > playerTotal)
+                        {
+                            bet = 0;
+                            deal = true;
+                        }
+
+                        if (playerTotal > dealerTotal)
+                        {
+                            money += (bet * 2);
+                            bet = 0;
+                        }
+
+                        if (dealerTotal == playerTotal)
+                        {
+                            money += bet;
+                            bet = 0;
+                        }
+
+                        if (dealerTotal > 21)
+                        {
+                            money += (bet * 2);
+                            bet = 0;
+                        }
+                    }
+
+                    if (bet == 0 && money == 0)
+                    {
+                        screen = Screen.end;
+                    }
+
                 }
 
+                
                 
                 
             }
@@ -394,11 +465,18 @@ namespace Blackjack_Royale
                 _spriteBatch.DrawString(moneyFont, "Your bet: " + bet, new Vector2(5, 425), Color.White);
                 _spriteBatch.DrawString(moneyFont, "Money: " + money, new Vector2(10, 450), Color.White);
                 _spriteBatch.DrawString(moneyFont, "You have:" + playerTotal, new Vector2(335, 450), Color.White);
-                _spriteBatch.Draw(shuffleBtnTexture, shuffleRect, Color.White); 
+                _spriteBatch.DrawString(moneyFont, "Dealer Total: " + dealerTotal, new Vector2(100, 100), Color.White);
                 _spriteBatch.Draw(bet10Texture, bet10Rect, Color.White);
                 _spriteBatch.Draw(bet10NegTexture, bet10NegRect, Color.White);
                 _spriteBatch.Draw(betMaxTexture, betMaxRect, Color.White);
                 _spriteBatch.Draw(betMinTexture, betMinRect, Color.White);
+
+                if (playing == true)
+                {
+                    _spriteBatch.Draw(hitTexture, hitRect, Color.White);
+                    _spriteBatch.Draw(standTexture, standRect, Color.White);
+                }
+                
                 for (int i = 0; i < playerHand.Count; i++)
                 {
                     cardOffset = i * 60;

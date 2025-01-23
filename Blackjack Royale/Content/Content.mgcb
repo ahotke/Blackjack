@@ -119,18 +119,6 @@
 #begin File.spritefont
 /copy:File.spritefont;moneyFont.spritefont
 
-#begin hit_button.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:hit_button.png
-
 #begin moneyFont.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
@@ -168,18 +156,6 @@
 /processorParam:Quality=Best
 /build:sound-effects-library-cash-register-sound.mp3
 
-#begin stand_button.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:stand_button.png
-
 #begin two-golden-buttons-play-vip-260nw-2296843847.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -203,6 +179,45 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:X:/My Drive/Downloads/green-play-table-icon-cartoon-casino-jack-vector-removebg-preview.png;table.png
+
+#begin X:/My Drive/Downloads/hit_button (1).png
+/copy:X:/My Drive/Downloads/hit_button (1).png;hit_button.png
+
+#begin X:/My Drive/Downloads/hit_button (1).png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:X:/My Drive/Downloads/hit_button (1).png;hit_button.png
+
+#begin X:/My Drive/Downloads/stand_button (1).png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:X:/My Drive/Downloads/stand_button (1).png;stand_button.png
+
+#begin X:/My Drive/Downloads/stand_button (1).png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:X:/My Drive/Downloads/stand_button (1).png;stand_button.png
 
 #begin yataghan.ttf
 /copy:yataghan.ttf
